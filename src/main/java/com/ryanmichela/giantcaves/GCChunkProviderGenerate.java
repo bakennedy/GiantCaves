@@ -1,6 +1,6 @@
 package com.ryanmichela.giantcaves;
 
-import net.minecraft.server.v1_7_R4.*;
+import net.minecraft.server.v1_8_R1.*;
 
 import java.util.Random;
 
@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class GCChunkProviderGenerate extends ChunkProviderGenerate {
     public GCChunkProviderGenerate(World world, long l, boolean b) {
-        super(world, l, b);
+        super(world, l, b, null);
     }
 
     @Override
@@ -38,7 +38,9 @@ public class GCChunkProviderGenerate extends ChunkProviderGenerate {
 
         Block[] arrayOfBlock = new Block[65536];
         byte[] arrayOfByte1 = new byte[65536];
-
+        ChunkSnapshot snapshot = new ChunkSnapshot();
+        for (int i = 0; i < arrayOfBlock.length; i++)
+            snapshot.a(i, arrayOfBlock);
         a(ii, jj, arrayOfBlock);
         z = n.getWorldChunkManager().getBiomeBlock(z, ii * 16, jj * 16, 16, 16);
         a(ii, jj, arrayOfBlock, arrayOfByte1, z);

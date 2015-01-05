@@ -3,8 +3,8 @@ package com.ryanmichela.giantcaves;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_7_R4.CraftChunk;
-import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R1.CraftChunk;
+import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
@@ -28,23 +28,26 @@ public class GCWaterHandler implements Listener {
 
     @EventHandler
     public void FromToHandler(BlockFromToEvent event) {
+        boolean continuousFlowMode = ReflectionUtil.getProtectedValue(((CraftWorld) event.getBlock().getWorld()).getHandle(), "d");
+        if (! continuousFlowMode)
+            return;
         // During chunk generation, nms.World.d is set to true. While true, liquids
         // flow continuously instead tick-by-tick. See nms.WorldGenLiquids line 59.
         Block b = event.getBlock();
         if (b.getType() == Material.STATIONARY_WATER || b.getType() == Material.STATIONARY_LAVA) {
-            boolean continuousFlowMode = ((CraftWorld)event.getBlock().getWorld()).getHandle().d;
-            if (continuousFlowMode) {
-                CraftChunk c = (CraftChunk)b.getChunk();
-                if (!randoms.containsKey(c)) {
-                    randoms.put(c, new GCRandom(c, config));
-                }
-                GCRandom r = randoms.get(c);
+            CraftChunk c = (CraftChunk)b.getChunk();
+            GCRandom r;
+            if (!randoms.containsKey(c)) {
+                r = new GCRandom(c, config);
+                randoms.put(c, r);
+            } else {
+                r = randoms.get(c);
+            }
 
-                if (r.isInGiantCave(b.getX(), b.getY(), b.getZ())) {
-                    if (b.getData() == 0) { // data value of 0 means source block
-                            event.setCancelled(true);
-                        }
-                }
+            if (r.isInGiantCave(b.getX(), b.getY(), b.getZ())) {
+                if (b.getData() == 0) { // data value of 0 means source block
+                        event.setCancelled(true);
+                    }
             }
         }
     }

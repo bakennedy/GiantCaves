@@ -14,12 +14,12 @@
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package com.ryanmichela.giantcaves;
 
-import net.minecraft.server.v1_7_R4.Block;
-import net.minecraft.server.v1_7_R4.Blocks;
-import net.minecraft.server.v1_7_R4.ChunkSection;
+import net.minecraft.server.v1_8_R1.Block;
+import net.minecraft.server.v1_8_R1.Blocks;
+import net.minecraft.server.v1_8_R1.ChunkSection;
 import org.bukkit.Chunk;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_7_R4.CraftChunk;
+import org.bukkit.craftbukkit.v1_8_R1.CraftChunk;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.plugin.Plugin;
 
@@ -42,7 +42,7 @@ public class GiantCavePopulator extends BlockPopulator {
 
     @Override
     public void populate(final World world, final Random random, final Chunk source) {
-        net.minecraft.server.v1_7_R4.Chunk nmsChunk = ((CraftChunk) source).getHandle();
+        net.minecraft.server.v1_8_R1.Chunk nmsChunk = ((CraftChunk) source).getHandle();
         ChunkSection[] chunkSections = nmsChunk.getSections();
 
         GCRandom gcRandom = new GCRandom(source, config);
@@ -58,7 +58,7 @@ public class GiantCavePopulator extends BlockPopulator {
                         }
 
                         // Create the cave by the block at this coordinate
-                        cs.setTypeId(x, y & 15, z, material);
+                        cs.setType(x, y & 15, z, Block.getById(this.material));
 
                         // Strip out any TileEntity that may remain
                         nmsChunk.f(x, y, z);
