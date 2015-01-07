@@ -36,19 +36,12 @@ public class GCPlugin extends JavaPlugin {
 
         // attach to worlds automatically when onlyUseWorldManagers is false
         if (!getConfig().getBoolean("onlyUseWorldManagers", false)) {
+            getLogger().info("Enabled, registering World Listener");
             getServer().getPluginManager().registerEvents(new GCWorldListener(), this);
         }
     }
 
     public void onDisable() {
-    }
-
-    @Override
-    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-        if (id == null || id == "") {
-            id = "sxz=200,sy=100,cutoff=62,miny=6,maxy=50";
-        }
-        return new GCChunkGenerator(this, id);
     }
 
     private class GCWorldListener implements Listener {
