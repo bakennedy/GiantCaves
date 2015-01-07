@@ -28,7 +28,7 @@ public class GCWaterHandler implements Listener {
 
     @EventHandler
     public void FromToHandler(BlockFromToEvent event) {
-        boolean continuousFlowMode = ReflectionUtil.getProtectedValue(((CraftWorld) event.getBlock().getWorld()).getHandle(), "d");
+        boolean continuousFlowMode = 0 < (Integer)ReflectionUtil.getProtectedValue(((CraftWorld) event.getBlock().getWorld()).getHandle(), "d");
         if (! continuousFlowMode)
             return;
         // During chunk generation, nms.World.d is set to true. While true, liquids

@@ -3,7 +3,7 @@
 # If you want to use Giant Caves as a stand-alone plugin, set onlyUseWorldManagers to false and edit
 # the worlds list below.
 
-onlyUseWorldManagers: true
+onlyUseWorldManagers: false
 
 # The worlds list below is only used when onlyUseWorldManagers is set to false
 
